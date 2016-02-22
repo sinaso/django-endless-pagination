@@ -98,6 +98,10 @@
                         // Fire onCompleted callback.
                         settings.onCompleted.apply(
                             html_link, [context, fragment.trim()]);
+
+                        $('html, body').animate({
+                            scrollTop: page_template.offset().top - 100
+                        }, 500);
                     });
                 }
                 return false;
