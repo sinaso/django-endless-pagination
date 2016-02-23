@@ -20,7 +20,7 @@
             // Set this to true to use the paginate-on-scroll feature.
             paginateOnScroll: false,
             // If paginate-on-scroll is on, this margin will be used.
-            paginateOnScrollMargin : 1,
+            paginateOnScrollMargin : 10,
             // If paginate-on-scroll is on, it is possible to define chunks.
             paginateOnScrollChunkSize: 0
         },
@@ -69,11 +69,14 @@
 
             // On scroll pagination.
             if (settings.paginateOnScroll) {
-                var win = $(window),
-                    doc = $(document);
-                win.scroll(function(){
-                    if (doc.height() - win.height() -
-                        win.scrollTop() <= settings.paginateOnScrollMargin) {
+                var win = $(window);
+                win.scroll(function() {
+                    var $more = $(settings.moreSelector);
+                    if ($more.length && win.height() + win.scrollTop() -
+                        $more.offset().top >= settings.paginateOnScrollMargin) {
+                        if (!$.fn.mutex('set', "infinite-scroll", 2))
+                          return;
+
                         // Do not paginate on scroll if chunks are used and
                         // the current chunk is complete.
                         var chunckSize = settings.paginateOnScrollChunkSize;
